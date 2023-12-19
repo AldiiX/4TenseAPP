@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
+        <PlatformTarget>x64</PlatformTarget>
+        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(PlatformTarget)' == 'x64'">
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">
+        <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CefSharp.Wpf" Version="120.1.80" />
+        
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="CefSharp">
+        <HintPath>..\..\..\..\.nuget\packages\cefsharp.common\120.1.80\lib\net462\CefSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="CefSharp.Core">
+        <HintPath>..\..\..\..\.nuget\packages\cefsharp.common\120.1.80\lib\net462\CefSharp.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="CefSharp.Wpf">
+        <HintPath>..\..\..\..\.nuget\packages\cefsharp.wpf\120.1.80\lib\net462\CefSharp.Wpf.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="resources\icons\close.png" />
+      <Resource Include="resources\icons\close.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+</Project>
