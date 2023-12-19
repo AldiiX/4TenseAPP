@@ -130,7 +130,7 @@ public partial class MainWindow : Window {
               "díky videím o nových killerech v Dead by Daylight jsme získali okolo 150 odběratelů",
               "první video na kanále vyšlo 22.2.2020 a bylo to video z GTA z Doomsday Heistu",
               "od 25.5.2022 máme vlastní doménu",
-              "video ,,THE MASTERMIND = NOVÝ KILLER v Dead by Daylight\" natočili FoFo s AldiiXem spolu IRL",
+              "video „THE MASTERMIND = NOVÝ KILLER v Dead by Daylight“ natočili FoFo s AldiiXem spolu IRL",
               "1.10. byla premiéra posledního dílu (#13) série Hrdinové v Overwatchi v Overwatch 1. Ten díl jsme hráli Torbjörna. Od dalšího dílu (#14) série je již natočena v Overwatch 2",
         };
 
