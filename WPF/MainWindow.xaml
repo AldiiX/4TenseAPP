@@ -111,7 +111,7 @@
         </StackPanel>
 
         <!-- Loading při načítání stránky -->
-        <Grid Name="LoadingGrid" VerticalAlignment="Bottom" Height="690" Visibility="Visible" Background="#CC000000">
+        <Grid Name="LoadingGrid" VerticalAlignment="Bottom" Height="690" Visibility="Hidden" Background="#CC000000">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="150">•••</TextBlock>
         </Grid>
 
