@@ -3,12 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPF"
         xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         MinWidth="1024"
         MinHeight="500"
-        Background="#1B1B1B"
+        Background="#1b1b1b"
         Foreground="White"
         Loaded="MainWindow_OnLoaded"
         SizeChanged="MainWindow_OnSizeChanged"
@@ -22,8 +21,10 @@
 
     <Grid Name="MAIN">
         <StackPanel Name="StackPanel">
+            <!-- Horní panel (náhrada za windows chrome) -->
             <Grid Name="WindowNav" Height="30" Background="#1B1B1B" VerticalAlignment="Top" MouseDown="WindowNav_OnMouseDown">
-                <Button Width="40" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="ButtonBase_OnClick">
+                <!-- EXIT -->
+                <Button Width="40" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnExit_OnClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="Transparent"/>
@@ -47,10 +48,65 @@
 
                     <Image IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/close.png"></Image>
                 </Button>
+
+                <!-- MAXIMIZE -->
+                <Button Margin="0 0 40 0" Width="40" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnMaximize_OnClick">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#44FFFFFF" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Image IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/maximize.png"></Image>
+                </Button>
+
+                <!-- MINIMIZE -->
+                <Button Margin="0 0 80 0" Width="40" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnMinimize_OnClick">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#44FFFFFF" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Image IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/minimize.png"></Image>
+                </Button>
             </Grid>
+
+            <!-- Browser -->
             <cefSharp:ChromiumWebBrowser Name="ChromiumWebBrowser" Address="https://4tense.cz/" Loaded="ChromiumWebBrowser_OnLoaded"/>
         </StackPanel>
 
+        <!-- Loading Text -->
         <StackPanel MaxWidth="700" VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="-1">
             <TextBlock FontSize="70" FontWeight="Bold" FontFamily="Cascadia Code, Consolas" TextAlignment="Center">LOADING</TextBlock>
             <TextBlock TextWrapping="Wrap" Loaded="ZajimavostTextBlock_OnLoaded" Name="ZajimavostTextBlock" FontSize="20" FontFamily="Cascadia Code, Consolas" TextAlignment="Center">Víš, že...</TextBlock>

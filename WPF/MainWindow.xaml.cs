@@ -1,19 +1,9 @@
 ﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Shell;
 using CefSharp;
 using CefSharp.Wpf;
-using Microsoft.Win32;
 
 namespace WPF;
 
@@ -60,7 +50,7 @@ public partial class MainWindow : Window {
         };
     }
 
-    private static void WindowToggleFullscreen() {
+    private void WindowToggleFullscreen() {
 
         if (w == null || windowChrome == null) {
             Console.WriteLine("WindowToggleFullscreen(): w je null");
@@ -71,13 +61,17 @@ public partial class MainWindow : Window {
             w.ResizeMode = ResizeMode.CanResize;
             w.WindowStyle = WindowStyle.SingleBorderWindow;
             w.WindowState = WindowState.Normal;
+            WindowNav.Height = 30;
             w.Topmost = false;
         } else {
             w.ResizeMode = ResizeMode.NoResize;
             w.WindowStyle = WindowStyle.None;
             w.WindowState = WindowState.Maximized;
+            WindowNav.Height = 0;
             w.Topmost = true;
         }
+
+        CalcRelativeSize();
     }
 
     private void CalcRelativeSize() {
@@ -170,11 +164,25 @@ public partial class MainWindow : Window {
     }
 
 
-    private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {
+    private void btnExit_OnClick(object sender, RoutedEventArgs e) {
         Application.Current.Shutdown();
     }
 
     private void WindowNav_OnMouseDown(object sender, MouseButtonEventArgs e) {
         if (Mouse.LeftButton == MouseButtonState.Pressed && w != null) w.DragMove();
+    }
+
+    private void btnMaximize_OnClick(object sender, RoutedEventArgs e) {
+        if(w == null) return;
+
+        WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
+
+        CalcRelativeSize();
+    }
+
+    private void btnMinimize_OnClick(object sender, RoutedEventArgs e) {
+        if(w == null) return;
+
+        WindowState = WindowState.Minimized;
     }
 }

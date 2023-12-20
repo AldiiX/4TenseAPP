@@ -41,6 +41,15 @@
       <Resource Include="resources\icons\close.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
+      <None Remove="resources\icons\window.png" />
+      <None Remove="resources\icons\minimize.png" />
+      <Resource Include="resources\icons\minimize.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="resources\icons\maximize.png" />
+      <Resource Include="resources\icons\maximize.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>
