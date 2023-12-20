@@ -9,9 +9,10 @@
         MinHeight="500"
         Background="#1b1b1b"
         Foreground="White"
+        Icon="resources/icon.ico"
         Loaded="MainWindow_OnLoaded"
         SizeChanged="MainWindow_OnSizeChanged"
-        Title="4Tense" Height="720" Width="1280">
+        Title="4TENSE" Height="720" Width="1280">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" UseAeroCaptionButtons="False"/>
@@ -23,6 +24,9 @@
         <StackPanel Name="StackPanel">
             <!-- Horní panel (náhrada za windows chrome) -->
             <Grid Name="WindowNav" Height="30" Background="#1B1B1B" VerticalAlignment="Top" MouseDown="WindowNav_OnMouseDown">
+                <!-- Name -->
+                <TextBlock Opacity="0.8" FontFamily="/resources/fonts/#Nexa Bold" VerticalAlignment="Center" Margin="12 0 0 0">4tense</TextBlock>
+
                 <!-- EXIT -->
                 <Button Width="40" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnExit_OnClick">
                     <Button.Style>
@@ -46,7 +50,7 @@
                         </Style>
                     </Button.Style>
 
-                    <Image IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/close.png"></Image>
+                    <Image Opacity="0.8" IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/close.png"></Image>
                 </Button>
 
                 <!-- MAXIMIZE -->
@@ -72,7 +76,7 @@
                         </Style>
                     </Button.Style>
 
-                    <Image IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/maximize.png"></Image>
+                    <Image Opacity="0.8" IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/maximize.png"></Image>
                 </Button>
 
                 <!-- MINIMIZE -->
@@ -98,17 +102,22 @@
                         </Style>
                     </Button.Style>
 
-                    <Image IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/minimize.png"></Image>
+                    <Image Opacity="0.8" IsHitTestVisible="False" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" Source="resources/icons/minimize.png"></Image>
                 </Button>
             </Grid>
 
             <!-- Browser -->
-            <cefSharp:ChromiumWebBrowser Name="ChromiumWebBrowser" Address="https://4tense.cz/" Loaded="ChromiumWebBrowser_OnLoaded"/>
+            <cefSharp:ChromiumWebBrowser LoadingStateChanged="ChromiumWebBrowser_OnLoadingStateChanged" Name="ChromiumWebBrowser" Address="https://4tense.cz/" />
         </StackPanel>
 
-        <!-- Loading Text -->
+        <!-- Loading při načítání stránky -->
+        <Grid Name="LoadingGrid" VerticalAlignment="Bottom" Height="690" Visibility="Visible" Background="#CC000000">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="150">•••</TextBlock>
+        </Grid>
+
+        <!-- Loading při inicializování web browseru -->
         <StackPanel MaxWidth="700" VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="-1">
-            <TextBlock FontSize="70" FontWeight="Bold" FontFamily="Cascadia Code, Consolas" TextAlignment="Center">LOADING</TextBlock>
+            <TextBlock FontSize="70" FontWeight="Bold" FontFamily="Cascadia Code, Consolas" TextAlignment="Center" Foreground="#3AF500">LOADING</TextBlock>
             <TextBlock TextWrapping="Wrap" Loaded="ZajimavostTextBlock_OnLoaded" Name="ZajimavostTextBlock" FontSize="20" FontFamily="Cascadia Code, Consolas" TextAlignment="Center">Víš, že...</TextBlock>
         </StackPanel>
     </Grid>

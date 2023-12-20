@@ -13,12 +13,12 @@ public partial class MainWindow : Window {
 
     private static MainWindow? w;
     private static WindowChrome? windowChrome;
+    private static bool browserInitialized = false;
 
     public MainWindow() {
         CefSettings s = new CefSettings();
         s.PersistSessionCookies = true;
         s.CachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\CEF";
-        s.WindowlessRenderingEnabled = true;
         s.CefCommandLineArgs.Add("disable-threaded-scrolling", "1");
         s.CefCommandLineArgs.Add("enable-smooth-scrolling", "1");
         Cef.Initialize(s);
@@ -77,6 +77,7 @@ public partial class MainWindow : Window {
     private void CalcRelativeSize() {
         StackPanel.Height = ActualHeight;
         ChromiumWebBrowser.Height = ActualHeight - WindowNav.Height;
+        LoadingGrid.Height = ActualHeight - WindowNav.Height;
     }
 
 
@@ -89,16 +90,6 @@ public partial class MainWindow : Window {
 
     private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e) {
         CalcRelativeSize();
-    }
-
-    private void ChromiumWebBrowser_OnLoaded(object sender, RoutedEventArgs e) {
-        ChromiumWebBrowser.ExecuteScriptAsyncWhenPageLoaded(
-            """
-                if(document.getElementById('FOOTER') && document.getElementById('FOOTER').getElementsByClassName('theme-switch')[0]) document.getElementById('FOOTER').getElementsByClassName('theme-switch')[0].remove();
-                if(document.getElementById("webtheme-changer")) document.getElementById("webtheme-changer").remove();
-                if(document.getElementById("crewutil-tools-parent") && document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[2]) document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[2].remove();
-                if(document.getElementById("crewutil-tools-parent") && document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[0]) document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[0].remove();
-            """, false);
     }
 
     private void ZajimavostTextBlock_OnLoaded(object sender, RoutedEventArgs e) {
@@ -184,5 +175,25 @@ public partial class MainWindow : Window {
         if(w == null) return;
 
         WindowState = WindowState.Minimized;
+    }
+
+    private void ChromiumWebBrowser_OnLoadingStateChanged(object? sender, LoadingStateChangedEventArgs e) {
+
+        if (!e.IsLoading) {
+            ChromiumWebBrowser.ExecuteScriptAsyncWhenPageLoaded(
+                """
+                    if(document.getElementById('FOOTER') && document.getElementById('FOOTER').getElementsByClassName('theme-switch')[0]) document.getElementById('FOOTER').getElementsByClassName('theme-switch')[0].remove();
+                    if(document.getElementById("webtheme-changer")) document.getElementById("webtheme-changer").remove();
+                    if(document.getElementById("crewutil-tools-parent") && document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[2]) document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[2].remove();
+                    if(document.getElementById("crewutil-tools-parent") && document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[0]) document.getElementById("crewutil-tools-parent").getElementsByClassName('crewutil-tools-child')[0].remove();
+                """, false
+            );
+
+            if (!browserInitialized) browserInitialized = true;
+        }
+
+        if(browserInitialized) Dispatcher.Invoke(() => {
+            LoadingGrid.Visibility = e.IsLoading ? Visibility.Visible : Visibility.Hidden;
+        });
     }
 }

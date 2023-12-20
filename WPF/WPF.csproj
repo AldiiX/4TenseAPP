@@ -9,6 +9,8 @@
         <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
         <PlatformTarget>x64</PlatformTarget>
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+        <ApplicationIcon>resources/icon.ico</ApplicationIcon>
+        <AssemblyName>AppTense</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(PlatformTarget)' == 'x64'">
@@ -50,6 +52,22 @@
       <Resource Include="resources\icons\maximize.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
+      <None Remove="resources\icon.ico" />
+      <Resource Include="resources\icon.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="resources\fonts\Nexa Bold.otf" />
+      <Resource Include="resources\fonts\Nexa Bold.otf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="resources\icons\loading\fadecircles_white.svg" />
+      <Resource Include="resources\icons\loading\fadecircles_white.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="resources\fonts\" />
     </ItemGroup>
 
 </Project>
