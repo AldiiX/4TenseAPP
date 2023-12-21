@@ -27,6 +27,57 @@
                 <!-- Name -->
                 <TextBlock Opacity="0.8" FontFamily="/resources/fonts/#Nexa Bold" VerticalAlignment="Center" Margin="12 0 0 0">4tense</TextBlock>
 
+                <!-- Browser controls -->
+                <DockPanel Name="WindowNavBrowserControls" Visibility="Collapsed" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80 0 0 0" Opacity="0.7">
+                    <DockPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Margin" Value="3 0 3 0"></Setter>
+                            <Setter Property="Width" Value="30"></Setter>
+                            <Setter Property="Height" Value="30"></Setter>
+                            <Setter Property="Background" Value="Transparent"></Setter>
+                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="1000">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#44FFFFFF" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="13"></Setter>
+                            <Setter Property="Height" Value="13"></Setter>
+                        </Style>
+                    </DockPanel.Resources>
+
+
+
+                    <Button Click="btnBackControl_OnClick">
+                        <Image Source="resources/icons/left_arrow.png"></Image>
+                    </Button>
+                    <Button Click="btnForwardControl_OnClick">
+                        <Image Source="resources/icons/right_arrow.png"></Image>
+                    </Button>
+                    <Button Click="btnReloadControl_OnClick">
+                        <Image Source="resources/icons/reload.png"></Image>
+                    </Button>
+                    <Button Click="btnHomeControl_OnClick">
+                        <Image Source="resources/icons/home.png"></Image>
+                    </Button>
+                </DockPanel>
+
+
+
                 <!-- EXIT -->
                 <Button Width="40" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnExit_OnClick">
                     <Button.Style>
@@ -112,7 +163,7 @@
 
         <!-- Loading při načítání stránky -->
         <Grid Name="LoadingGrid" VerticalAlignment="Bottom" Height="690" Visibility="Hidden" Background="#CC000000">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="150">•••</TextBlock>
+            <TextBlock Name="LoadingGridText" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="150">•••</TextBlock>
         </Grid>
 
         <!-- Loading při inicializování web browseru -->

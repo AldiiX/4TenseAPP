@@ -64,6 +64,22 @@
       <Resource Include="resources\icons\loading\fadecircles_white.svg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
+      <None Remove="resources\icons\home.png" />
+      <Resource Include="resources\icons\home.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="resources\icons\left_arrow.png" />
+      <Resource Include="resources\icons\left_arrow.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="resources\icons\reload.png" />
+      <Resource Include="resources\icons\reload.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="resources\icons\right_arrow.png" />
+      <Resource Include="resources\icons\right_arrow.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
     <ItemGroup>

@@ -14,6 +14,7 @@ public partial class MainWindow : Window {
     private static MainWindow? w;
     private static WindowChrome? windowChrome;
     private static bool browserInitialized = false;
+    private static bool browserIsLoading = true;
 
     public MainWindow() {
         CefSettings s = new CefSettings();
@@ -46,9 +47,16 @@ public partial class MainWindow : Window {
         PreviewKeyDown += (_, e) => {
             switch (e.Key) {
                 case Key.F11: WindowToggleFullscreen(); break;
+                case Key.F5: ChromiumWebBrowser.Reload(); break;
             }
         };
     }
+
+
+
+
+
+#region Metody
 
     private void WindowToggleFullscreen() {
 
@@ -80,9 +88,63 @@ public partial class MainWindow : Window {
         LoadingGrid.Height = ActualHeight - WindowNav.Height;
     }
 
+    private async Task PlayLoadingAnimation() {
+        while (true) {
+
+            if (!browserIsLoading) {
+                Dispatcher.Invoke(() => { LoadingGridText.Text = ""; });
+                break;
+            }
+
+            Dispatcher.Invoke(() => {
+                if (LoadingGridText.Text == "•••") LoadingGridText.Text = "";
+                LoadingGridText.Text += "•";
+            });
+
+            await Task.Delay(200);
+        }
+    }
+
+#endregion
 
 
 
+
+
+
+
+
+
+
+
+
+
+#region Event Metody
+
+    private class CustomLifeSpanHandler : ILifeSpanHandler {
+        public bool DoClose(IWebBrowser chromiumWebBrowser, IBrowser browser) { return false; }
+
+        public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser) {}
+
+        public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser) {}
+
+        public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser) {
+            // Otevřít v externím Chromu, pokud je cílové chování '_blank'
+            if (targetDisposition == WindowOpenDisposition.NewForegroundTab) {
+
+                Process p = new Process();
+                p.StartInfo.UseShellExecute = true;
+                p.StartInfo.FileName = targetUrl;
+                p.Start();
+
+                newBrowser = null;
+                return true;
+            }
+
+            newBrowser = null;
+            return false;
+        }
+    }
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e) {
         CalcRelativeSize();
@@ -122,39 +184,6 @@ public partial class MainWindow : Window {
         ZajimavostTextBlock.Text = "Víš, že " + zajimavosti[new Random().Next(0, zajimavosti.Length)] + "?";
     }
 
-
-
-
-
-
-
-
-    public class CustomLifeSpanHandler : ILifeSpanHandler {
-        public bool DoClose(IWebBrowser chromiumWebBrowser, IBrowser browser) { return false; }
-
-        public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser) {}
-
-        public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser) {}
-
-        public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser) {
-            // Otevřít v externím Chromu, pokud je cílové chování '_blank'
-            if (targetDisposition == WindowOpenDisposition.NewForegroundTab) {
-
-                Process p = new Process();
-                p.StartInfo.UseShellExecute = true;
-                p.StartInfo.FileName = targetUrl;
-                p.Start();
-
-                newBrowser = null;
-                return true;
-            }
-
-            newBrowser = null;
-            return false;
-        }
-    }
-
-
     private void btnExit_OnClick(object sender, RoutedEventArgs e) {
         Application.Current.Shutdown();
     }
@@ -177,7 +206,7 @@ public partial class MainWindow : Window {
         WindowState = WindowState.Minimized;
     }
 
-    private void ChromiumWebBrowser_OnLoadingStateChanged(object? sender, LoadingStateChangedEventArgs e) {
+    private async void ChromiumWebBrowser_OnLoadingStateChanged(object? sender, LoadingStateChangedEventArgs e) {
 
         if (!e.IsLoading) {
             ChromiumWebBrowser.ExecuteScriptAsyncWhenPageLoaded(
@@ -189,11 +218,39 @@ public partial class MainWindow : Window {
                 """, false
             );
 
-            if (!browserInitialized) browserInitialized = true;
+            if (!browserInitialized) {
+                Dispatcher.Invoke(() => { WindowNavBrowserControls.Visibility = Visibility.Visible; });
+                browserInitialized = true;
+            }
+
+            if(!e.IsLoading) browserIsLoading = false;
         }
 
         if(browserInitialized) Dispatcher.Invoke(() => {
             LoadingGrid.Visibility = e.IsLoading ? Visibility.Visible : Visibility.Hidden;
         });
+
+        await PlayLoadingAnimation();
+        if(e.IsLoading) browserIsLoading = true;
     }
+
+    private void btnBackControl_OnClick(object sender, RoutedEventArgs e) {
+        ChromiumWebBrowser.Back();
+    }
+
+    private void btnForwardControl_OnClick(object sender, RoutedEventArgs e) {
+        ChromiumWebBrowser.Forward();
+    }
+
+    private void btnReloadControl_OnClick(object sender, RoutedEventArgs e) {
+        ChromiumWebBrowser.Reload();
+    }
+
+    private void btnHomeControl_OnClick(object sender, RoutedEventArgs e) {
+        if(ChromiumWebBrowser.Address is "https://www.4tense.cz/#home" or "https://4tense.cz/#home") return;
+
+        ChromiumWebBrowser.Address = "https://www.4tense.cz/";
+    }
+
+#endregion
 }
