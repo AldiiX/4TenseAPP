@@ -277,7 +277,7 @@ public partial class MainWindow : Window {
         private void btnHomeControl_OnClick(object sender, RoutedEventArgs e) {
             if(ChromiumWebBrowser.Address is "https://www.4tense.cz/#home" or "https://4tense.cz/#home") return;
 
-            ChromiumWebBrowser.Address = "https://www.4tense.cz/";
+            ChromiumWebBrowser.Address = "https://www.4tense.cz/#home";
         }
 
         private void ChromiumWebBrowser_OnLoaded(object sender, RoutedEventArgs e) {

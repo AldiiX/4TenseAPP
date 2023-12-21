@@ -9,6 +9,7 @@
         MinHeight="500"
         Background="#1b1b1b"
         Foreground="White"
+        WindowStartupLocation="CenterScreen"
         Icon="resources/icon.ico"
         Loaded="MainWindow_OnLoaded"
         SizeChanged="MainWindow_OnSizeChanged"
