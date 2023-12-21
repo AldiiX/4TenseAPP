@@ -24,6 +24,7 @@
         <StackPanel Name="StackPanel">
             <!-- Horní panel (náhrada za windows chrome) -->
             <Grid Name="WindowNav" Height="30" Background="#1B1B1B" VerticalAlignment="Top" MouseDown="WindowNav_OnMouseDown">
+
                 <!-- Name -->
                 <TextBlock Opacity="0.8" FontFamily="/resources/fonts/#Nexa Bold" VerticalAlignment="Center" Margin="12 0 0 0">4tense</TextBlock>
 
@@ -158,17 +159,21 @@
             </Grid>
 
             <!-- Browser -->
-            <cefSharp:ChromiumWebBrowser LoadingStateChanged="ChromiumWebBrowser_OnLoadingStateChanged" Name="ChromiumWebBrowser" Address="https://4tense.cz/" />
+            <cefSharp:ChromiumWebBrowser LoadingStateChanged="ChromiumWebBrowser_OnLoadingStateChanged" Loaded="ChromiumWebBrowser_OnLoaded" Name="ChromiumWebBrowser" Address="https://4tense.cz/" />
         </StackPanel>
+
+
 
         <!-- Loading při načítání stránky -->
         <Grid Name="LoadingGrid" VerticalAlignment="Bottom" Height="690" Visibility="Hidden" Background="#CC000000">
             <TextBlock Name="LoadingGridText" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="150">•••</TextBlock>
         </Grid>
 
+
+
         <!-- Loading při inicializování web browseru -->
-        <StackPanel MaxWidth="700" VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="-1">
-            <TextBlock FontSize="70" FontWeight="Bold" FontFamily="Cascadia Code, Consolas" TextAlignment="Center" Foreground="#3AF500">LOADING</TextBlock>
+        <StackPanel Name="LoadingStackPanel" MaxWidth="700" VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="-1" Opacity="0.3">
+            <TextBlock Name="LoadingStackPanelText" FontSize="70" FontWeight="Bold" FontFamily="Cascadia Code, Consolas" TextAlignment="Center">•••</TextBlock>
             <TextBlock TextWrapping="Wrap" Loaded="ZajimavostTextBlock_OnLoaded" Name="ZajimavostTextBlock" FontSize="20" FontFamily="Cascadia Code, Consolas" TextAlignment="Center">Víš, že...</TextBlock>
         </StackPanel>
     </Grid>
