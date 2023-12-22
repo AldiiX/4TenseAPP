@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shell;
@@ -55,6 +56,11 @@ public partial class MainWindow : Window {
                 case Key.F11: WindowToggleFullscreen(); break;
                 case Key.F5: ChromiumWebBrowser.Reload(); break;
             }
+        };
+
+        // event při změně sítě
+        NetworkChange.NetworkAddressChanged += (_, _) => {
+            CheckNetwork(true);
         };
     }
 
@@ -121,6 +127,44 @@ public partial class MainWindow : Window {
             }
         }
 
+        public static bool GetInternetAvailability() {
+            NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+
+            foreach (NetworkInterface networkInterface in networkInterfaces) {
+                if (networkInterface.OperationalStatus != OperationalStatus.Up) continue;
+
+                if (networkInterface.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or NetworkInterfaceType.Ethernet && !networkInterface.Description.ToLowerInvariant().Contains("virtual")) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private async void CheckNetwork(bool executedByEvent = false) {
+            await Dispatcher.Invoke(async () => {
+
+                if (!GetInternetAvailability()) {
+                    if (!browserInitialized) {
+                        btnHomeControl_OnClick(null!, null!);
+                        await Task.Delay(50);
+                        btnBackControl_OnClick(null!, null!);
+                        await Task.Delay(50);
+                    }
+
+                    OfflineModeText.Visibility = Visibility.Visible;
+                    LoadingStackPanel.Visibility = Visibility.Visible;
+                    LoadingStackPanelText.Text = ":(";
+                    ZajimavostTextBlock.Text = "Nejsi připojený/á k internetu...";
+                } else {
+                    OfflineModeText.Visibility = Visibility.Collapsed;
+                    LoadingStackPanelText.Text = "";
+                    ZajimavostTextBlock.Text = "";
+
+                    if(executedByEvent) btnHomeControl_OnClick(null!, null!);
+                }
+            });
+        }
     #endregion
 
 
@@ -241,13 +285,13 @@ public partial class MainWindow : Window {
         private async void ChromiumWebBrowser_OnLoadingStateChanged(object? sender, LoadingStateChangedEventArgs e) {
 
             if (!e.IsLoading) {
-
-
                 if (!browserInitialized) {
                     Dispatcher.Invoke(() => {
                         WindowNavBrowserControls.Visibility = Visibility.Visible;
                         LoadingStackPanel.Visibility = Visibility.Collapsed;
+                        CheckNetwork();
                     });
+
                     browserInitialized = true;
                 }
 

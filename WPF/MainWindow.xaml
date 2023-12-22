@@ -10,6 +10,7 @@
         Background="#1b1b1b"
         Foreground="White"
         WindowStartupLocation="CenterScreen"
+
         Icon="resources/icon.ico"
         Loaded="MainWindow_OnLoaded"
         SizeChanged="MainWindow_OnSizeChanged"
@@ -77,6 +78,9 @@
                         <Image Source="resources/icons/home.png"></Image>
                     </Button>
                 </DockPanel>
+
+                <!-- Offline Mode Text -->
+                <TextBlock Name="OfflineModeText" Visibility="Collapsed" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Cascadia Code, Consolas" Foreground="Red">OFFLINE MODE</TextBlock>
 
 
 
