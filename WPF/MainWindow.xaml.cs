@@ -161,7 +161,7 @@ public partial class MainWindow : Window {
                     LoadingStackPanelText.Text = "";
                     ZajimavostTextBlock.Text = "";
 
-                    if(executedByEvent) btnHomeControl_OnClick(null!, null!);
+                    if(executedByEvent) btnReloadControl_OnClick(null!, null!);
                 }
             });
         }
